@@ -1,16 +1,12 @@
 var MapView = Backbone.View.extend({
-	el: $('#main'),
-
-	events: {
-		// no events yet.
-	},
-
-	initialize: function() {
+	initialize: function(element, zeegaId) {
 		_.bindAll(this, 'render', 'collectionToMap', 'putOnMap');
 
 		var that = this;
+
+		this.el = element;
 		
-		this.placeCollection = new PlacesCollection();
+		this.placeCollection = new PlacesCollection(zeegaId);
 		
 		this.placeCollection.fetch({
 			success: function(collection, response) {
@@ -26,7 +22,6 @@ var MapView = Backbone.View.extend({
 	render: function(){
 
 	    $(this.el).append('<div id="map" style="height: 600px;"></div>');
-	    
 
 	    this.leafletMap = L.map('map').setView([51.505, -0.09], 13);
 

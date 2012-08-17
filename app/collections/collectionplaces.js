@@ -1,9 +1,13 @@
 var PlacesCollection = Backbone.Collection.extend({
+	zeegaId: 41366,
 	model: Place,
-	url: 'http://alpha.zeega.org/api/items/41366',
-	initialize : function(){ console.log('##	PlacesCollection initialize')},
+	url: function(zeegaId) {
+		return 'http://alpha.zeega.org/api/items/' + this.zeegaId;
+	},
+	initialize: function(zeegaId) {
+		this.zeegaId = zeegaId;
+	},
 	parse: function(response) {
-		console.log('PlacesCollection parse');
 		this.latLong = [response.items[0].media_geo_latitude,response.items[0].media_geo_longitude];
 		return response.items[0].child_items;
 	}
