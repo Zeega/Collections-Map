@@ -6,29 +6,56 @@ var MapView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		_.bindAll(this, 'render');
+		_.bindAll(this, 'render', 'collectionToMap', 'putOnMap');
 
-		//this.collection = new List();
-		//myCollection.bind('add', this.appendItem);
+		var that = this;
+		
+		this.placeCollection = new PlacesCollection();
+		
+		this.placeCollection.fetch({
+			success: function(collection, response) {
+				that.centerMap(collection.latLong, that);
+				that.collectionToMap(collection, that);
+			}
+		});
 
 		this.render();
+		
 	},
 
 	render: function(){
-		/*
-		var self = this;
-		_(myCollection.models).each(function(item){ // in case collection is not empty
-	        self.appendItem(item);
-	    }, this);
-	    */
-	    $(this.el).append('<div id="map" style="height: 300px; background: salmon;"></div>');
+
+	    $(this.el).append('<div id="map" style="height: 600px;"></div>');
+	    
+
+	    this.leafletMap = L.map('map').setView([51.505, -0.09], 13);
+
+	    L.tileLayer('http://{s}.tiles.mapbox.com/v2/mapbox.mapbox-streets/{z}/{x}/{y}.png', {
+		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+		    maxZoom: 18
+		}).addTo(this.leafletMap);
+
 	},
 
-	addItem: function() {
-		// this was a thing that happened when you clicked!
+	centerMap: function(latLong, context) { // we must pass in context as this is called from the response of the collection's fetch
+		context.leafletMap.panTo(latLong);
 	},
 
-	appendItem: function(item){
-		// this was a thing that was bound to the model, and it 
+	collectionToMap: function(collection, context) { // we must pass in context as this is called from the response of the collection's fetch
+		collection.each( function(item) {
+			putOnMap(item);
+		});
+
+		function putOnMap(item) {
+			var placeInfo = {
+				lat: item.get('media_geo_latitude'),
+				long: item.get('media_geo_longitude'),
+				image: item.get("thumbnail_url")
+			}
+			var marker = L.marker([placeInfo.lat, placeInfo.long]).addTo(context.leafletMap);
+
+			marker.bindPopup("<img src='" + placeInfo.image + "' width='144' height='144'>");
+
+		}
 	}
 });

@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.ie.css" />
+  <![endif]--> 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Backbone Boilerplate</title>
+  <title>Collections Map</title>
 
   <!-- Application root. -->
   <base href="/">
@@ -18,7 +22,17 @@
   <!-- Main container. -->
   <div role="main" id="main"></div>
 
-  <!-- Application source. -->
-  <script data-main="app/config" src="assets/js/libs/require.js"></script>
+  <!-- Libraries -->
+  <script src="assets/js/libs/jquery.js"></script>
+  <script src="assets/js/libs/lodash.js"></script>
+  <script src="assets/js/libs/backbone.js"></script>
+  <script src="assets/vendor/leaflet/leaflet.js"></script>
+  <!-- Views -->
+  <script src="app/views/mapview.js"></script>
+  <script src="app/models/modelplace.js"></script>
+  <script src="app/collections/collectionplaces.js"></script>
+  <!-- Main -->
+  <script src="app/main.js"></script>
+
 </body>
 </html>
