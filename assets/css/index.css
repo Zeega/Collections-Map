@@ -1,3 +1,6 @@
 /* H5BP styles. */
 @import "../vendor/h5bp/css/style.css";
 
+#map {
+	height: 600px;
+}

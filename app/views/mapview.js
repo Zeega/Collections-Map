@@ -1,6 +1,7 @@
 var MapView = Backbone.View.extend({
+
 	initialize: function(element, zeegaId) {
-		_.bindAll(this, 'render', 'collectionToMap', 'putOnMap');
+		_.bindAll(this, 'render', 'centerMap', 'collectionToMap', 'putOnMap');
 
 		var that = this;
 
@@ -20,10 +21,15 @@ var MapView = Backbone.View.extend({
 	},
 
 	render: function(){
-
-	    $(this.el).append('<div id="map" style="height: 600px;"></div>');
-
-	    this.leafletMap = L.map('map').setView([51.505, -0.09], 13);
+		console.log(this.el);
+		if (this.leafletMap !== null) {
+			this.leafletMap = null;
+		}
+		if ($(this.el).find('#map').length > 0) {
+			$(this.el).find('#map').remove();
+		}
+		$(this.el).append('<div id="map"></div>');
+	    this.leafletMap = L.map("map").setView([51.505, -0.09], 13);
 
 	    L.tileLayer('http://{s}.tiles.mapbox.com/v2/mapbox.mapbox-streets/{z}/{x}/{y}.png', {
 		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
